@@ -31,6 +31,7 @@
                                     <tr>
                                         <th scope="col">No</th>
                                         <th scope="col">Nama Kategori</th>
+                                        <th scope="col">Image</th>
                                         <th scope="col">Deskripsi</th>
                                         <th scope="col">Aksi</th>
                                     </tr>
@@ -40,6 +41,8 @@
                                         <tr>
                                             <th scope="row">{{ $loop->iteration }}</th>
                                             <td>{{ $category->name }}</td>
+                                            <td><img src="{{ asset('storage/categories/' . $category->image) }}" alt=""
+                                                    style="width: 100px"></td>
                                             <td>{{ $category->description }}</td>
                                             <td>
                                                 <a href="{{ route('admin.categories.edit', $category->id) }}"

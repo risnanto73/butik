@@ -56,17 +56,14 @@ class ProductController extends Controller
 
         try {
 
-            // dd($request->all());
-
             $data = $request->all();
             $data['slug'] = Str::slug($request->name) . '-' . time();
 
             if ($request->hasFile('image') && $request->file('image')->isValid()) {
                 $image = $request->file('image');
-                // dd($image);
+                
                 $imageName = time() . '_' . $image->getClientOriginalName();
-                // dd($imageName);
-                // $image = Storage::disk('public')->putFileAs('products', $image, $imageName);
+                
                 $image->storeAs('public/products', $imageName);
                 $data['image'] = $imageName;
             }
@@ -164,7 +161,6 @@ class ProductController extends Controller
             if ($data->image) {
                 Storage::delete('public/products/' . $data->image);
             }
-            // $data->productDetails()->delete();   
 
             $data->delete();
 

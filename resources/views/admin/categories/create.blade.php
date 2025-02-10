@@ -37,6 +37,11 @@
                             </div>
 
                             <div class="mb-3">
+                                <label for="image" class="form-label">Gambar Kategori</label>
+                                <input type="file" class="form-control" id="image" name="image" required value="{{ old('image') }}">
+                            </div>
+
+                            <div class="mb-3">
                                 <label for="description" class="form-label">Deskripsi</label>
                                 <textarea class="form-control" id="description" name="description" rows="3"></textarea>
                             </div>

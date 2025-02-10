@@ -111,24 +111,24 @@ class CategoryController extends Controller
             $data = Category::findOrFail($id);
             $slug = Str::slug($request->name) . '-' . time();
 
-            // Persiapan data yang akan diupdate
             $updateData = [
                 'name' => $request->name,
                 'slug' => $slug,
                 'description' => $request->description,
             ];
 
-            // Jika ada gambar baru di-upload
             if ($request->hasFile('image')) {
                 $image = $request->file('image');
                 $image_name = time() . '.' . $image->getClientOriginalName();
                 $image->move(public_path('storage/categories'), $image_name);
 
-                // Tambahkan image baru ke data update
+                if ($data->image && file_exists(public_path('storage/categories/' . $data->image))) {
+                    unlink(public_path('storage/categories/' . $data->image));
+                }
+
                 $updateData['image'] = $image_name;
             }
 
-            // Update data kategori
             $data->update($updateData);
 
             return redirect()->route('admin.categories.index')->with('success', 'Kategori berhasil diperbarui.');
