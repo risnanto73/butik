@@ -58,30 +58,31 @@ class FrontEndController extends Controller
     {
         try {
             // Ambil parameter filter dari request
-            $query = Product::query();
-
+            $query = Product::with('category'); // Eager load relasi category
+    
             // Filter berdasarkan nama (opsional)
             if ($request->has('name') && !empty($request->name)) {
                 $query->where('name', 'like', '%' . $request->name . '%');
             }
-
+    
             // Sorting berdasarkan kolom tertentu (opsional)
             $sortBy = $request->get('sort_by', 'created_at'); // Default sorting by `created_at`
             $sortDirection = $request->get('sort_direction', 'asc'); // Default `asc`
-
+    
             if (in_array($sortDirection, ['asc', 'desc'])) {
                 $query->orderBy($sortBy, $sortDirection);
             }
-
+    
             // Limit jumlah data (opsional)
             $limit = $request->get('limit', 10); // Default limit 10
             $products = $query->paginate($limit);
-
+    
             return ResponseFormatter::success($products, 'Data produk berhasil diambil');
         } catch (\Exception $e) {
             return ResponseFormatter::error(null, 'Data produk gagal diambil: ' . $e->getMessage(), 500);
         }
     }
+    
 
     public function productDetail($slug)
     {

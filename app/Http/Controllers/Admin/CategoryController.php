@@ -14,7 +14,7 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        $data = Category::select('id', 'name', 'slug', 'description', 'image')->latest()->get();
+        $data = Category::select('id', 'name', 'slug','stock', 'description', 'image')->latest()->get();
         return view('admin.categories.index', compact('data'));
     }
 
@@ -35,6 +35,7 @@ class CategoryController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'stock' => 'nullable|numeric',
         ], [
             'name.required' => 'Nama kategori wajib diisi.',
             'name.string' => 'Nama kategori harus berupa string.',
@@ -44,6 +45,7 @@ class CategoryController extends Controller
             'image.image' => 'File yang diupload harus berupa gambar.',
             'image.mimes' => 'File yang diupload harus berformat jpeg, png, jpg, gif, atau svg.',
             'image.max' => 'Ukuran file yang diupload maksimal 2048 kilobytes.',
+            'stock.string' => 'Stok kategori harus berupa angka.',
         ]);
 
         try {
@@ -60,6 +62,7 @@ class CategoryController extends Controller
             $data['name'] = $request->name;
             $data['slug'] = $slug;
             $data['description'] = $request->description;
+            $data['stock'] = $request->stock;
 
             Category::create($data);
 
@@ -96,6 +99,7 @@ class CategoryController extends Controller
             'name' => 'required|string|max:255',
             'description' => 'required|string',
             'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'stock' => 'nullable|numeric',
         ], [
             'name.required' => 'Nama kategori wajib diisi.',
             'name.string' => 'Nama kategori harus berupa string.',
@@ -105,6 +109,7 @@ class CategoryController extends Controller
             'image.image' => 'File yang diupload harus berupa gambar.',
             'image.mimes' => 'File yang diupload harus berformat jpeg, png, jpg, gif, atau svg.',
             'image.max' => 'Ukuran file yang diupload maksimal 2048 kilobytes.',
+            'stock.string' => 'Stok kategori harus berupa angka.',
         ]);
 
         try {
@@ -115,6 +120,7 @@ class CategoryController extends Controller
                 'name' => $request->name,
                 'slug' => $slug,
                 'description' => $request->description,
+                'stock' => $request->stock,
             ];
 
             if ($request->hasFile('image')) {
