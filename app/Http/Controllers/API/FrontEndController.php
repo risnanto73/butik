@@ -57,10 +57,6 @@ class FrontEndController extends Controller
     public function product(Request $request)
     {
         try {
-            // Ambil daftar kategori (tidak diperlukan jika hanya ingin menampilkan kategori di dalam produk)
-            // $categories = Category::all();
-
-            // Query produk dengan relasi kategori
             $query = Product::with('category'); // Eager load category
 
             // Filter berdasarkan nama (opsional)
@@ -68,13 +64,16 @@ class FrontEndController extends Controller
                 $query->where('name', 'like', '%' . $request->name . '%');
             }
 
-            // Sorting berdasarkan kolom tertentu (opsional)
-            $sortBy = $request->get('sort_by', 'created_at'); // Default sorting by `created_at`
-            $sortDirection = $request->get('sort_direction', 'asc'); // Default `asc`
+            // Sorting berdasarkan request atau default ke 'terbaru'
+            $sortBy = $request->get('sort_by', 'created_at'); // Default sorting by created_at
+            $sortDirection = $request->get('sort_direction', 'desc'); // Default `desc` untuk terbaru
 
-            if (in_array($sortDirection, ['asc', 'desc'])) {
-                $query->orderBy($sortBy, $sortDirection);
+            // Pastikan hanya menerima sorting direction yang valid
+            if (!in_array($sortDirection, ['asc', 'desc'])) {
+                $sortDirection = 'desc';
             }
+
+            $query->orderBy($sortBy, $sortDirection);
 
             // Limit jumlah data (opsional)
             $limit = $request->get('limit', 10); // Default limit 10
@@ -85,7 +84,6 @@ class FrontEndController extends Controller
             return ResponseFormatter::error(null, 'Data produk gagal diambil: ' . $e->getMessage(), 500);
         }
     }
-
 
     public function productDetail($slug)
     {
