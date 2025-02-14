@@ -33,6 +33,7 @@
                                         <th scope="col">Nama</th>
                                         <th scope="col">Kategori</th>
                                         <th scope="col">Stok</th>
+                                        <th scope="col">Harga</th>
                                         <th scope="col">Gambar</th>
                                         <th scope="col">Aksi</th>
                                     </tr>
@@ -44,6 +45,7 @@
                                             <td>{{ $product->name }}</td>
                                             <td>{{ $product->category->name }}</td>
                                             <td>{{ $product->quantity }}</td>
+                                            <td>nunber_format($product->price)</td>
                                             <td>
                                                 <img src="{{ asset('storage/products/' . $product->image) }}" alt="{{ $product->name }}"
                                                     width="100">
